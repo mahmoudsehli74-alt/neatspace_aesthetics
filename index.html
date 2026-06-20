@@ -393,6 +393,28 @@
     .delay-300 { animation-delay: 0.3s; }
     .delay-400 { animation-delay: 0.4s; }
 
+    /* ── Deep-Link Highlight Glow ── */
+    /* Sage-gold neon ring that pulses 3x then fully fades out after 3.5s */
+    @keyframes deeplink-pulse {
+      0%   { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0),   outline-color: rgba(250, 204, 21, 0); }
+      10%  { box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.55), 0 0 32px 8px rgba(250, 204, 21, 0.2); }
+      35%  { box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.30), 0 0 18px 4px rgba(250, 204, 21, 0.1); }
+      55%  { box-shadow: 0 0 0 4px rgba(134, 239, 172, 0.55), 0 0 32px 8px rgba(134, 239, 172, 0.2); }
+      75%  { box-shadow: 0 0 0 2px rgba(134, 239, 172, 0.25), 0 0 14px 3px rgba(134, 239, 172, 0.1); }
+      90%  { box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.20), 0 0 10px 2px rgba(250, 204, 21, 0.08); }
+      100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+    }
+    .deeplink-highlight {
+      /* Smooth entrance ring + 3-beat gold/sage-green pulse, fades completely */
+      animation: deeplink-pulse 3.5s cubic-bezier(0.4, 0, 0.6, 1) both;
+      /* Prevent layout shift — keeps card border slightly lit at start */
+      outline: 2px solid rgba(250, 204, 21, 0.01);
+      outline-offset: 2px;
+      border-radius: inherit;
+      position: relative;
+      z-index: 10;
+    }
+
     /* ── Toast ── */
     .toast {
       position: fixed;
@@ -1367,7 +1389,119 @@
 
 
     /* ═══════════════════════════════════════════════════════════
-       6. DATA ENGINE — Fetch from ./products.json
+       6. DEEP LINK ENGINE
+       Reads ?id=<productId> from the URL, waits for cards to be
+       in the DOM, then scrolls + glows + triggers the affiliate
+       button for that product. Fails 100% silently on no match.
+       ═══════════════════════════════════════════════════════════ */
+    const DeepLink = {
+
+      /**
+       * Parse the `id` query parameter from the current page URL.
+       * Returns the raw string or null if absent / empty.
+       */
+      _parseId() {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const raw = (params.get('id') || '').trim();
+          return raw.length > 0 ? raw : null;
+        } catch (_) {
+          return null; // Malformed URL — fail silently
+        }
+      },
+
+      /**
+       * Apply the animated gold/sage-green glow ring to a card element,
+       * then remove it cleanly after the animation completes (3.5 s).
+       * Uses a CSS animation class so no JS polling is needed.
+       */
+      _applyGlow(cardEl) {
+        // Force a reflow so the class triggers fresh even if reused
+        cardEl.classList.remove('deeplink-highlight');
+        void cardEl.offsetWidth; // Reflow trigger
+        cardEl.classList.add('deeplink-highlight');
+
+        // Clean up after animation completes — 3600ms covers the 3.5s animation
+        const cleanup = () => cardEl.classList.remove('deeplink-highlight');
+        cardEl.addEventListener('animationend', cleanup, { once: true });
+        // Belt-and-suspenders fallback timer
+        setTimeout(cleanup, 3700);
+      },
+
+      /**
+       * Smoothly scroll to a card.
+       * On mobile: use 'nearest' block alignment so the card doesn't
+       * get obscured by the fixed navbar. On desktop: use 'center'.
+       */
+      _scrollTo(cardEl) {
+        const isMobile = window.innerWidth < 768;
+        // Small delay lets the browser settle layout before scrolling
+        setTimeout(() => {
+          cardEl.scrollIntoView({
+            behavior: 'smooth',
+            block: isMobile ? 'nearest' : 'center',
+            inline: 'nearest',
+          });
+        }, 80);
+      },
+
+      /**
+       * Main entry point. Called after products are rendered into the DOM.
+       * Checks URL param, finds the matching card, scrolls, glows, and
+       * programmatically clicks the product's affiliate button.
+       *
+       * All errors and mismatches are swallowed — the page always loads
+       * normally regardless of the URL parameter state.
+       */
+      run() {
+        try {
+          const targetId = this._parseId();
+
+          // ① No param present — load normally, nothing to do
+          if (!targetId) return;
+
+          // ② Check if this ID exists in the fetched product list
+          const product = AppState.products.find(p => p.id === targetId);
+
+          // ③ No matching product — fail silently
+          if (!product) {
+            console.info(`[NeatSpace DeepLink] No product matched id="${targetId}". Loading normally.`);
+            return;
+          }
+
+          // ④ Find the rendered card element in the DOM
+          const cardEl = document.getElementById(`product-card-${product.id}`);
+          if (!cardEl) {
+            console.info(`[NeatSpace DeepLink] Card element not found for id="${product.id}".`);
+            return;
+          }
+
+          // ⑤ Smooth scroll to card
+          this._scrollTo(cardEl);
+
+          // ⑥ Apply glowing highlight ring (gold → sage-green → fade)
+          this._applyGlow(cardEl);
+
+          // ⑦ Programmatically trigger the affiliate button
+          //    Small delay ensures the scroll animation has started
+          //    so the user sees the card before the link fires
+          setTimeout(() => {
+            const affiliateBtn = document.getElementById(`affiliate-btn-${product.id}`);
+            if (affiliateBtn) {
+              affiliateBtn.click();
+            }
+          }, 600);
+
+        } catch (err) {
+          // Catch-all: never crash the page due to deep-link logic
+          console.warn('[NeatSpace DeepLink] Unexpected error (suppressed):', err);
+        }
+      }
+    };
+
+
+    /* ═══════════════════════════════════════════════════════════
+       7. DATA ENGINE — Fetch from ./products.json
        ═══════════════════════════════════════════════════════════ */
     async function loadProducts() {
       UI.showSkeletons();
@@ -1386,7 +1520,13 @@
         // Brief delay for smooth skeleton-to-content transition
         await new Promise(resolve => setTimeout(resolve, 500));
 
+        // Render all product cards into the DOM
         UI.renderProducts(products);
+
+        // ── Deep-link activation: runs AFTER cards are in the DOM ──
+        // requestAnimationFrame ensures the browser has painted the
+        // newly rendered cards before we try to scroll/interact with them
+        requestAnimationFrame(() => DeepLink.run());
 
       } catch (error) {
         console.error('[NeatSpace] Failed to load products:', error);
@@ -1421,13 +1561,14 @@
 
 
     /* ═══════════════════════════════════════════════════════════
-       8. APP INIT
+       9. APP INIT
        ═══════════════════════════════════════════════════════════ */
     document.addEventListener('DOMContentLoaded', () => {
       AppState._loadCart();
       UI.updateCartBadge();
       initEventListeners();
       SearchEngine.init();
+      // loadProducts resolves async, then DeepLink.run() fires internally
       loadProducts();
     });
   </script>
