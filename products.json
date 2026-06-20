@@ -1,0 +1,83 @@
+[
+  {
+    "id": "prod-001",
+    "name": "Smart RGB Sunset Lamp",
+    "tagline": "Transform any corner into a golden-hour vibe zone",
+    "description": "This viral sunset projection lamp casts a warm, photogenic glow across your walls and ceiling. Features 16 RGB color modes, 360-degree rotation head, USB-C powered, and a whisper-quiet motor. Perfect for content creators, cozy desk setups, and ambient room lighting.",
+    "price": 24.99,
+    "originalPrice": 49.99,
+    "currency": "USD",
+    "badge": "Viral Hit",
+    "badgeIcon": "flame",
+    "category": "Ambient Lighting",
+    "rating": 4.8,
+    "reviewCount": 3842,
+    "features": [
+      "16 RGB Color Modes",
+      "360-Degree Rotation",
+      "USB-C Powered",
+      "Remote Control Included",
+      "Timer Function (30/60 min)"
+    ],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1617957718614-8c23f060c2d0?w=600&h=450&fit=crop&q=80",
+      "alt": "Warm sunset lamp projecting golden ambient light in a cozy room setup"
+    },
+    "affiliateUrl": "https://s.click.aliexpress.com/e/_ExampleSunsetLamp",
+    "pinterestBoard": "smart-room-lighting"
+  },
+  {
+    "id": "prod-002",
+    "name": "Minimalist Magnetic Cable Organizer",
+    "tagline": "Declutter your desk. Elevate your workflow.",
+    "description": "Crafted from premium aerospace-grade aluminum with powerful N52 neodymium magnets, this cable organizer keeps up to 5 cables perfectly aligned and instantly accessible. The weighted silicone base grips any surface without adhesive. A must-have for minimalist desk setups.",
+    "price": 12.99,
+    "originalPrice": 29.99,
+    "currency": "USD",
+    "badge": "Editor's Pick",
+    "badgeIcon": "star",
+    "category": "Desk Organization",
+    "rating": 4.9,
+    "reviewCount": 5219,
+    "features": [
+      "Aerospace-Grade Aluminum",
+      "N52 Neodymium Magnets",
+      "Holds 5 Cables Simultaneously",
+      "Non-Slip Silicone Base",
+      "Universal Cable Compatibility"
+    ],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1593062096033-9a26b09da705?w=600&h=450&fit=crop&q=80",
+      "alt": "Clean minimalist desk setup with organized cables and accessories"
+    },
+    "affiliateUrl": "https://s.click.aliexpress.com/e/_ExampleCableOrg",
+    "pinterestBoard": "desk-organization"
+  },
+  {
+    "id": "prod-003",
+    "name": "Ambient Digital RGB Clock",
+    "tagline": "Time meets art. Your desk's new centerpiece.",
+    "description": "A stunning 3D holographic-style LED digital clock with ambient mirror display. Shows time, temperature, humidity, and date with customizable brightness levels. The frameless mirror finish doubles as a sleek desk accent when off. Voice-activated or touch-controlled.",
+    "price": 18.99,
+    "originalPrice": 39.99,
+    "currency": "USD",
+    "badge": "Best Seller",
+    "badgeIcon": "trophy",
+    "category": "Smart Displays",
+    "rating": 4.7,
+    "reviewCount": 7156,
+    "features": [
+      "3D Holographic LED Display",
+      "Temp / Humidity / Date Readout",
+      "Adjustable Brightness (3 Levels)",
+      "Mirror Finish When Off",
+      "Voice and Touch Activated"
+    ],
+    "image": {
+      "url": "https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=600&h=450&fit=crop&q=80",
+      "alt": "Modern LED digital clock with glowing display on a sleek desk"
+    },
+    "affiliateUrl": "https://s.click.aliexpress.com/e/_ExampleDigiClock",
+    "pinterestBoard": "smart-desk-clocks"
+  }
+]
