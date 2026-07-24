@@ -89,5 +89,10 @@
     "id": "concurrent_test_0",
     "title": "Concurrent Product 0",
     "price": "$15"
+  },
+  {
+    "id": "concurrent_test_1",
+    "title": "Concurrent Product 1",
+    "price": "$15"
   }
 ]
