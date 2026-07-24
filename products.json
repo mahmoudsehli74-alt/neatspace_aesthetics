@@ -79,22 +79,5 @@
     },
     "affiliateUrl": "https://s.click.aliexpress.com/e/_ExampleDigiClock",
     "pinterestBoard": "smart-desk-clocks"
-  },
-  {
-    "product_id": "999888777",
-    "title": "Phase 4 E2E Test Product",
-    "image_url": "https://example.com/live_test.jpg",
-    "original_price": "$0.00",
-    "sale_price": "$0.00",
-    "discount": "",
-    "affiliate_url": "https://s.click.aliexpress.com/e/_default",
-    "orders": 0,
-    "rating": "",
-    "category_id": "",
-    "id": "999888777",
-    "link": "https://s.click.aliexpress.com/e/_default",
-    "image": "https://example.com/live_test.jpg",
-    "seo_title": "SEO Test Product",
-    "seo_description": "This is a mock SEO description for Phase 4."
   }
 ]
