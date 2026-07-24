@@ -84,5 +84,10 @@
     "id": "test_sync_1",
     "title": "Test Product 1",
     "price": "$10"
+  },
+  {
+    "id": "test_sync_2",
+    "title": "Test Product 2",
+    "price": "$20"
   }
 ]
