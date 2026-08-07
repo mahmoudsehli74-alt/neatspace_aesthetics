@@ -79,5 +79,26 @@
     },
     "affiliateUrl": "https://s.click.aliexpress.com/e/_ExampleDigiClock",
     "pinterestBoard": "smart-desk-clocks"
+  },
+  {
+    "id": 4,
+    "name": "Live Link Verification Test - neatspace_aesthetics",
+    "title": "Live Link Verification Test - neatspace_aesthetics",
+    "description": "",
+    "price": "49.99",
+    "originalPrice": "49.99",
+    "image": "https://example.com/live_test.jpg",
+    "category": "",
+    "rating": 4.5,
+    "reviewCount": 0,
+    "style_used": "none",
+    "alt_text": "Photo of Live Link Verification Test - neatspace_aesthetics",
+    "tagline": "",
+    "currency": "",
+    "badge": "",
+    "badgeIcon": "",
+    "features": [],
+    "affiliateUrl": "",
+    "pinterestBoard": ""
   }
 ]
